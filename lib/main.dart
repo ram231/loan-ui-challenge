@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:loan_payment_challenge/login/index.dart';
+import 'package:loan_payment_challenge/profile/profile_scaffold.dart';
+import 'package:loan_payment_challenge/routes/index.dart';
+import 'package:loan_payment_challenge/services/bottom_navigation_bar/index.dart';
+import 'package:provider/provider.dart';
+
+import 'dashboard/index.dart';
 
 void main() {
   runApp(MyApp());
@@ -7,135 +14,79 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => BottomNavigationChangeNotifier(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HiRamLoginScaffold(),
+        onGenerateRoute: HiRamRoutes.hiRamGeneratedRoutes,
+      ),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class HiRamDashboardScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    print("Building ${this.toString()}");
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Color(
-            0xFF3b7ed9,
-          ),
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text("Home"),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.credit_card),
-              title: Text("Repayment"),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text("My"),
-            )
-          ]),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Container(
-              color: Color(0xFF397bd0),
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        "Good day, Vince!",
-                        style: textTheme.headline5.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          CircleAvatar(
-                            radius: 12,
-                            backgroundColor: Color(0xFF6ba1e5),
-                            child: Icon(
-                              Icons.subject,
-                              size: 12,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              "Audit",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                  Text(
-                    "You have 3 loans outstanding",
-                    style: textTheme.caption.copyWith(
-                      color: Colors.white54,
-                    ),
-                  ),
-                  Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        "₱ 40,000.00",
-                        style: textTheme.headline5.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          "Prepayment",
-                          style: textTheme.caption.copyWith(
-                            color: Colors.white60,
-                          ),
-                        ),
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.white60,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(24)),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    "Outstanding amount",
-                    style: textTheme.caption.copyWith(
-                      color: Colors.white54,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Container(
-              color: Color(0xFFf5f7fb),
-              child: MyLoanPayments(),
-            ),
-          )
-        ],
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+        },
+        label: Text(
+          "Lend an item",
+        ),
+        icon: Icon(Icons.note_add),
       ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
+      bottomNavigationBar: Consumer<BottomNavigationChangeNotifier>(
+        builder: (context, model, _) => BottomNavigationBar(
+            onTap: (index) {
+              context
+                  .read<BottomNavigationChangeNotifier>()
+                  .setCurrentIndex(index);
+            },
+            currentIndex: model.currentIndex,
+            selectedItemColor: Color(
+              0xFF3b7ed9,
+            ),
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                title: Text("Home"),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                title: Text("Profile"),
+              )
+            ]),
+      ),
+      body: Consumer<BottomNavigationChangeNotifier>(
+          builder: (context, model, _) {
+        if (model.currentIndex == 1) {
+          return HiRamProfileBody();
+        }
+        return Column(
+          children: <Widget>[
+            Expanded(
+              child: HeaderDashboard(),
+            ),
+            Expanded(
+              flex: 3,
+              child: Container(
+                color: Color(0xFFf5f7fb),
+                child: MyLoanPayments(),
+              ),
+            )
+          ],
+        );
+      }),
     );
   }
 }
@@ -171,6 +122,26 @@ class _MyLoanPaymentsState extends State<MyLoanPayments> {
       title: "Swift bank loan",
       period: "1/1 period",
       overdue: "Before the due date 30 day",
+      payment: "6,000.00",
+      icon: Icon(
+        Icons.security,
+        color: Colors.blue,
+      ),
+    ),
+    LoanPayment(
+      title: "Swift bank loan",
+      period: "1/1 period",
+      overdue: "Before the due date 30 day",
+      payment: "6,000.00",
+      icon: Icon(
+        Icons.security,
+        color: Colors.blue,
+      ),
+    ),
+    LoanPayment(
+      title: "Swift bank loan",
+      period: "1/1 period",
+      overdue: "Before the due date 2 day",
       payment: "6,000.00",
       icon: Icon(
         Icons.security,

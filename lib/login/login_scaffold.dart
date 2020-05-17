@@ -1,0 +1,318 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:loan_payment_challenge/routes/index.dart';
+
+class HiRamLoginScaffold extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: ThemeData(
+        primaryColor: Color(0xFF7497FF),
+        accentColor: Color(0xFF1944C3),
+        accentTextTheme: GoogleFonts.ralewayTextTheme(
+          TextTheme(
+            bodyText1: TextStyle(
+              color: Color(0xFF1944C3),
+            ),
+          ),
+        ),
+        primaryTextTheme: GoogleFonts.ralewayTextTheme(),
+      ),
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Color(0xFF7497FF),
+          body: HiRamLoginBody(),
+        ),
+      ),
+    );
+  }
+}
+
+class HiRamLoginBody extends StatelessWidget {
+  const HiRamLoginBody({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(
+          children: [
+            SizedBox(height: 48),
+            SizedBox(
+              child: SvgPicture.asset(
+                "assets/ram-logo.svg",
+                height: size.height / 6,
+                width: size.width,
+                color: Colors.white,
+                fit: BoxFit.none,
+              ),
+            ),
+            Text(
+              "HiRAM",
+              style: Theme.of(context).accentTextTheme.headline2.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            Text(
+              "Keep track of what they've\nborrowed from you.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            ),
+            HiRamLoginForm(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HiRamLoginForm extends StatefulWidget {
+  HiRamLoginForm({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  _HiRamLoginFormState createState() => _HiRamLoginFormState();
+}
+
+class _HiRamLoginFormState extends State<HiRamLoginForm> {
+  final GlobalKey<FormState> _formkey = GlobalKey();
+  TextEditingController _usernameController, _passwordController;
+  @override
+  void initState() {
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Container(
+      margin: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(8),
+      width: size.width,
+      height: size.height / 1.8,
+      child: Card(
+        elevation: 6,
+        child: Form(
+          key: _formkey,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16.0,
+                ),
+                child: Text(
+                  "LOGIN WITH YOUR ACCOUNT",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF5680FF),
+                  ),
+                ),
+              ),
+              HiRamTextFormField(
+                controller: _usernameController,
+                hintText: "Username",
+                errorText: "*Username Required!",
+              ),
+              HiRamPasswordTextField(
+                passwordController: _passwordController,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    "FORGOT PASSWORD?",
+                    style: Theme.of(context).accentTextTheme.bodyText1.copyWith(
+                          fontWeight: FontWeight.w400,
+                        ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  if (_formkey.currentState.validate()) {
+                    _formkey.currentState.save();
+                    Navigator.of(context).pushNamed(routeDashboard);
+                  }
+                },
+                child: Container(
+                  width: size.width,
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Color(0xFF7497FF),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "LOGIN",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: HiRamSignUpButton(),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class HiRamSignUpButton extends StatelessWidget {
+  const HiRamSignUpButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {},
+      child: RichText(
+        text: TextSpan(
+          style: Theme.of(context).accentTextTheme.bodyText1,
+          children: [
+            TextSpan(
+              text: "NO ACCOUNT? ",
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            TextSpan(
+              text: "SIGN UP HERE",
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HiRamPasswordTextField extends StatefulWidget {
+  const HiRamPasswordTextField({
+    Key key,
+    @required TextEditingController passwordController,
+  })  : _passwordController = passwordController,
+        super(key: key);
+
+  final TextEditingController _passwordController;
+
+  @override
+  _HiRamPasswordTextFieldState createState() => _HiRamPasswordTextFieldState();
+}
+
+class _HiRamPasswordTextFieldState extends State<HiRamPasswordTextField> {
+  bool showPassword = false;
+  @override
+  Widget build(BuildContext context) {
+    return HiRamTextFormField(
+      controller: widget._passwordController,
+      hintText: "Password",
+      errorText: "*Password Required!",
+      obscureText: showPassword,
+      suffixIcon: GestureDetector(
+        onTap: () {
+          setState(() {
+            showPassword = !showPassword;
+          });
+        },
+        child: Icon(
+          showPassword ? Icons.visibility_off : Icons.visibility,
+          color: Colors.grey,
+          size: 16,
+        ),
+      ),
+    );
+  }
+}
+
+class HiRamTextFormField extends StatelessWidget {
+  const HiRamTextFormField({
+    Key key,
+    this.controller,
+    this.hintText,
+    this.errorText,
+    this.suffixIcon,
+    this.obscureText,
+    this.onChanged,
+    this.validator,
+  }) : super(key: key);
+  final TextEditingController controller;
+  final String hintText;
+  final String errorText;
+  final Widget suffixIcon;
+  final bool obscureText;
+  final ValueChanged onChanged;
+  final String Function(String) validator;
+  @override
+  Widget build(BuildContext context) {
+    final accentTextTheme = Theme.of(context).accentTextTheme;
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 8,
+      ),
+      child: TextFormField(
+        onSaved: (value) => controller.text = value,
+        onChanged: onChanged,
+        decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.grey[300],
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 12,
+            ),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none),
+            hintText: hintText,
+            hintStyle: accentTextTheme.subtitle1.copyWith(
+              fontWeight: FontWeight.w400,
+              color: Colors.black38,
+            ),
+            suffix: suffixIcon),
+        obscureText: obscureText ?? false,
+        validator: validator ??
+            (value) {
+              if (errorText == null || errorText.isEmpty) {
+                return null;
+              }
+              if (value.isEmpty) return errorText;
+              return null;
+            },
+      ),
+    );
+  }
+}
