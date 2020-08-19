@@ -35,13 +35,9 @@ class HiRamDashboardScaffold extends StatelessWidget {
     print("Building ${this.toString()}");
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-        },
-        label: Text(
-          "Lend an item",
-        ),
-        icon: Icon(Icons.note_add),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.note_add),
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,

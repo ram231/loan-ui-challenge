@@ -9,7 +9,7 @@ class HiRamLoginScaffold extends StatelessWidget {
     return Theme(
       data: ThemeData(
         primaryColor: Color(0xFF7497FF),
-        accentColor: Color(0xFF1944C3),
+        accentColor: Color(0xFFFFDC74),
         accentTextTheme: GoogleFonts.ralewayTextTheme(
           TextTheme(
             bodyText1: TextStyle(
@@ -23,7 +23,18 @@ class HiRamLoginScaffold extends StatelessWidget {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Color(0xFF7497FF),
-          body: HiRamLoginBody(),
+          body: GestureDetector(
+              onTap: () {
+                final currentFocus = FocusScope.of(context);
+
+                if (!currentFocus.hasPrimaryFocus) {
+                  if (!currentFocus.hasPrimaryFocus && currentFocus.hasFocus) {
+                    currentFocus.unfocus();
+                    FocusManager.instance.primaryFocus.unfocus();
+                  }
+                }
+              },
+              child: HiRamLoginBody()),
         ),
       ),
     );
@@ -56,7 +67,7 @@ class HiRamLoginBody extends StatelessWidget {
             Text(
               "HiRAM",
               style: Theme.of(context).accentTextTheme.headline2.copyWith(
-                    color: Colors.white,
+                    color: Color(0xFFFFDC74),
                     fontWeight: FontWeight.bold,
                   ),
             ),
@@ -64,8 +75,8 @@ class HiRamLoginBody extends StatelessWidget {
               "Keep track of what they've\nborrowed from you.",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
+                fontSize: 14,
+                color: Color(0xFFFFEE74),
               ),
             ),
             HiRamLoginForm(),
@@ -142,8 +153,10 @@ class _HiRamLoginFormState extends State<HiRamLoginForm> {
                   alignment: Alignment.centerRight,
                   child: Text(
                     "FORGOT PASSWORD?",
-                    style: Theme.of(context).accentTextTheme.bodyText1.copyWith(
+                    style: Theme.of(context).textTheme.subtitle1.copyWith(
                           fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          decoration: TextDecoration.underline,
                         ),
                   ),
                 ),
@@ -171,6 +184,8 @@ class _HiRamLoginFormState extends State<HiRamLoginForm> {
                       "LOGIN",
                       style: TextStyle(
                         color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
                     ),
                   ),
