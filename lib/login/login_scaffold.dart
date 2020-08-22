@@ -145,8 +145,13 @@ class _HiRamLoginFormState extends State<HiRamLoginForm> {
                 errorText: "*Username Required!",
               ),
               HiRamPasswordTextField(
-                passwordController: _passwordController,
-              ),
+                  passwordController: _passwordController,
+                  onSubmit: (value) {
+                    if (_formkey.currentState.validate()) {
+                      _formkey.currentState.save();
+                      Navigator.of(context).pushNamed(routeDashboard);
+                    }
+                  }),
               Padding(
                 padding: const EdgeInsets.only(right: 12.0),
                 child: Align(
@@ -240,17 +245,19 @@ class HiRamPasswordTextField extends StatefulWidget {
   const HiRamPasswordTextField({
     Key key,
     @required TextEditingController passwordController,
+    this.onSubmit,
   })  : _passwordController = passwordController,
         super(key: key);
 
   final TextEditingController _passwordController;
-
+  final Function(String) onSubmit;
   @override
   _HiRamPasswordTextFieldState createState() => _HiRamPasswordTextFieldState();
 }
 
 class _HiRamPasswordTextFieldState extends State<HiRamPasswordTextField> {
   bool showPassword = false;
+
   @override
   Widget build(BuildContext context) {
     return HiRamTextFormField(
@@ -258,6 +265,7 @@ class _HiRamPasswordTextFieldState extends State<HiRamPasswordTextField> {
       hintText: "Password",
       errorText: "*Password Required!",
       obscureText: showPassword,
+      onSubmit: widget.onSubmit,
       suffixIcon: GestureDetector(
         onTap: () {
           setState(() {
@@ -284,6 +292,7 @@ class HiRamTextFormField extends StatelessWidget {
     this.obscureText,
     this.onChanged,
     this.validator,
+    this.onSubmit,
   }) : super(key: key);
   final TextEditingController controller;
   final String hintText;
@@ -292,6 +301,7 @@ class HiRamTextFormField extends StatelessWidget {
   final bool obscureText;
   final ValueChanged onChanged;
   final String Function(String) validator;
+  final Function(String) onSubmit;
   @override
   Widget build(BuildContext context) {
     final accentTextTheme = Theme.of(context).accentTextTheme;
@@ -303,6 +313,7 @@ class HiRamTextFormField extends StatelessWidget {
       child: TextFormField(
         onSaved: (value) => controller.text = value,
         onChanged: onChanged,
+        onFieldSubmitted: onSubmit,
         decoration: InputDecoration(
             filled: true,
             fillColor: Colors.grey[300],

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../dashboard/index.dart';
 import '../login/index.dart';
-import '../main.dart';
 
 const routeLogin = "/";
 const routeIntro = '/intro';
@@ -15,7 +16,7 @@ class HiRamRoutes {
       case routeIntro:
       case routeDashboard:
         return CupertinoPageRoute(
-      settings: settings,
+          settings: settings,
           builder: (context) => HiRamDashboardScaffold(),
         );
       case routeProfile:
