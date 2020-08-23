@@ -7,7 +7,7 @@ import '../services/bottom_navigation_bar/index.dart';
 class HiRamDashboardScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Building ${this.toString()}");
+    print('Building $this');
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
@@ -30,11 +30,11 @@ class HiRamDashboardScaffold extends StatelessWidget {
             items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                title: Text("Home"),
+                title: Text('Home'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                title: Text("Profile"),
+                title: Text('Profile'),
               )
             ]),
       ),
@@ -59,7 +59,7 @@ class HiRamDashboardScaffold extends StatelessWidget {
                 margin: const EdgeInsets.all(8),
                 child: Row(children: [
                   Text(
-                    "What would you like to do?",
+                    'What would you like to do?',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ]),
@@ -87,50 +87,50 @@ class MyLoanPayments extends StatefulWidget {
 class _MyLoanPaymentsState extends State<MyLoanPayments> {
   final List<LoanPayment> payments = [
     LoanPayment(
-      title: "Logistics freight credit",
-      period: "1/2 period",
-      overdue: "Overdue 7 day",
-      payment: "20,000.00",
+      title: 'Logistics freight credit',
+      period: '1/2 period',
+      overdue: 'Overdue 7 day',
+      payment: '20,000.00',
       icon: Icon(
         Icons.monetization_on,
         color: Colors.yellow,
       ),
     ),
     LoanPayment(
-      title: "Swift bank loan",
-      period: "1/1 period",
-      overdue: "Before the due date 2 day",
-      payment: "6,000.00",
+      title: 'Swift bank loan',
+      period: '1/1 period',
+      overdue: 'Before the due date 2 day',
+      payment: '6,000.00',
       icon: Icon(
         Icons.security,
         color: Colors.blue,
       ),
     ),
     LoanPayment(
-      title: "Swift bank loan",
-      period: "1/1 period",
-      overdue: "Before the due date 30 day",
-      payment: "6,000.00",
+      title: 'Swift bank loan',
+      period: '1/1 period',
+      overdue: 'Before the due date 30 day',
+      payment: '6,000.00',
       icon: Icon(
         Icons.security,
         color: Colors.blue,
       ),
     ),
     LoanPayment(
-      title: "Swift bank loan",
-      period: "1/1 period",
-      overdue: "Before the due date 30 day",
-      payment: "6,000.00",
+      title: 'Swift bank loan',
+      period: '1/1 period',
+      overdue: 'Before the due date 30 day',
+      payment: '6,000.00',
       icon: Icon(
         Icons.security,
         color: Colors.blue,
       ),
     ),
     LoanPayment(
-      title: "Swift bank loan",
-      period: "1/1 period",
-      overdue: "Before the due date 2 day",
-      payment: "6,000.00",
+      title: 'Swift bank loan',
+      period: '1/1 period',
+      overdue: 'Before the due date 2 day',
+      payment: '6,000.00',
       icon: Icon(
         Icons.security,
         color: Colors.blue,
@@ -218,7 +218,7 @@ class _MyLoanPaymentsState extends State<MyLoanPayments> {
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: Text(
-                      "Repayment",
+                      'Repayment',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -278,7 +278,7 @@ class HeaderDashboard extends StatelessWidget {
           Spacer(),
           HeaderNameDashboard(),
           Text(
-            "You have 3 loans outstanding",
+            'You have 3 loans outstanding',
             style: textTheme.caption.copyWith(
               color: Colors.white54,
             ),
@@ -286,7 +286,7 @@ class HeaderDashboard extends StatelessWidget {
           Spacer(),
           CurrentBalanceDashboard(),
           Text(
-            "Outstanding amount",
+            'Outstanding amount',
             style: textTheme.caption.copyWith(
               color: Colors.white54,
             ),
@@ -309,7 +309,7 @@ class CurrentBalanceDashboard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          "₱ 40,000.00",
+          '₱ 40,000.00',
           style: textTheme.headline5.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -317,7 +317,7 @@ class CurrentBalanceDashboard extends StatelessWidget {
         ),
         Container(
           child: Text(
-            "Prepayment",
+            'Prepayment',
             style: textTheme.caption.copyWith(
               color: Colors.white60,
             ),
@@ -346,7 +346,7 @@ class HeaderNameDashboard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          "Good day, Vince!",
+          'Good day, Vince!',
           style: textTheme.headline5.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -366,7 +366,7 @@ class HeaderNameDashboard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                "Audit",
+                'Audit',
                 style: TextStyle(
                   color: Colors.white,
                 ),

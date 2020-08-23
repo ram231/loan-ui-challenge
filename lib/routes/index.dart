@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../dashboard/index.dart';
 import '../login/index.dart';
 
-const routeLogin = "/";
+const routeLogin = '/';
 const routeIntro = '/intro';
 const routeDashboard = '/dashboard';
 const routeProfile = '/profile';

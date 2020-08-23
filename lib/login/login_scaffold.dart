@@ -57,7 +57,7 @@ class HiRamLoginBody extends StatelessWidget {
             SizedBox(height: 48),
             SizedBox(
               child: SvgPicture.asset(
-                "assets/ram-logo.svg",
+                'assets/ram-logo.svg',
                 height: size.height / 6,
                 width: size.width,
                 color: Colors.white,
@@ -65,14 +65,14 @@ class HiRamLoginBody extends StatelessWidget {
               ),
             ),
             Text(
-              "HiRAM",
+              'HiRAM',
               style: Theme.of(context).accentTextTheme.headline2.copyWith(
                     color: Color(0xFFFFDC74),
                     fontWeight: FontWeight.bold,
                   ),
             ),
             Text(
-              "Keep track of what they've\nborrowed from you.",
+              'Keep track of what they\'ve\nborrowed from you.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
@@ -132,7 +132,7 @@ class _HiRamLoginFormState extends State<HiRamLoginForm> {
                   vertical: 16.0,
                 ),
                 child: Text(
-                  "LOGIN WITH YOUR ACCOUNT",
+                  'LOGIN WITH YOUR ACCOUNT',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF5680FF),
@@ -141,8 +141,8 @@ class _HiRamLoginFormState extends State<HiRamLoginForm> {
               ),
               HiRamTextFormField(
                 controller: _usernameController,
-                hintText: "Username",
-                errorText: "*Username Required!",
+                hintText: 'Username',
+                errorText: '*Username Required!',
               ),
               HiRamPasswordTextField(
                   passwordController: _passwordController,
@@ -157,7 +157,7 @@ class _HiRamLoginFormState extends State<HiRamLoginForm> {
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    "FORGOT PASSWORD?",
+                    'FORGOT PASSWORD?',
                     style: Theme.of(context).textTheme.subtitle1.copyWith(
                           fontWeight: FontWeight.w400,
                           fontSize: 12,
@@ -186,7 +186,7 @@ class _HiRamLoginFormState extends State<HiRamLoginForm> {
                   ),
                   child: Center(
                     child: Text(
-                      "LOGIN",
+                      'LOGIN',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -223,13 +223,13 @@ class HiRamSignUpButton extends StatelessWidget {
           style: Theme.of(context).accentTextTheme.bodyText1,
           children: [
             TextSpan(
-              text: "NO ACCOUNT? ",
+              text: 'NO ACCOUNT? ',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
               ),
             ),
             TextSpan(
-              text: "SIGN UP HERE",
+              text: 'SIGN UP HERE',
               style: TextStyle(
                 decoration: TextDecoration.underline,
               ),
@@ -262,22 +262,24 @@ class _HiRamPasswordTextFieldState extends State<HiRamPasswordTextField> {
   Widget build(BuildContext context) {
     return HiRamTextFormField(
       controller: widget._passwordController,
-      hintText: "Password",
-      errorText: "*Password Required!",
+      hintText: 'Password',
+      errorText: '*Password Required!',
       obscureText: showPassword,
       onSubmit: widget.onSubmit,
-      suffixIcon: GestureDetector(
-        onTap: () {
-          setState(() {
-            showPassword = !showPassword;
-          });
-        },
-        child: Icon(
-          showPassword ? Icons.visibility_off : Icons.visibility,
-          color: Colors.grey,
-          size: 16,
-        ),
-      ),
+      suffixIcon: widget?._passwordController?.text?.isNotEmpty ?? false
+          ? GestureDetector(
+              onTap: () {
+                setState(() {
+                  showPassword = !showPassword;
+                });
+              },
+              child: Icon(
+                showPassword ? Icons.visibility_off : Icons.visibility,
+                color: Colors.grey,
+                size: 16,
+              ),
+            )
+          : null,
     );
   }
 }

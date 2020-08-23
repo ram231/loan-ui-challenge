@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:loan_payment_challenge/login/index.dart';
-import 'package:loan_payment_challenge/profile/profile_scaffold.dart';
-import 'package:loan_payment_challenge/routes/index.dart';
-import 'package:loan_payment_challenge/services/bottom_navigation_bar/index.dart';
 import 'package:provider/provider.dart';
 
-import 'dashboard/index.dart';
+import 'login/index.dart';
+import 'routes/index.dart';
+import 'services/bottom_navigation_bar/index.dart';
 
 void main() {
   runApp(MyApp());
