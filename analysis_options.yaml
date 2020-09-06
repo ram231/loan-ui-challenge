@@ -1,1 +1,4 @@
 include: package:pedantic/analysis_options.yaml
+  strong-mode:
+    implicit-dynamic: true
+    implicit-casts: true
