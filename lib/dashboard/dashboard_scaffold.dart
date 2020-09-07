@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hiram/helpers/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../profile/profile_scaffold.dart';
@@ -8,73 +9,203 @@ class HiRamDashboardScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('Building $this');
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.note_add),
-      ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
-      bottomNavigationBar: Consumer<BottomNavigationChangeNotifier>(
-        builder: (context, model, _) => BottomNavigationBar(
-            onTap: (index) {
-              context
-                  .read<BottomNavigationChangeNotifier>()
-                  .setCurrentIndex(index);
-            },
-            currentIndex: model.currentIndex,
-            selectedItemColor: Color(
-              0xFF3b7ed9,
-            ),
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                title: Text('Home'),
+    return SafeArea(
+      child: Scaffold(
+        drawer: Drawer(),
+        endDrawer: Drawer(),
+        resizeToAvoidBottomInset: false,
+        floatingActionButton: TransactionFAB(),
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniCenterDocked,
+        bottomNavigationBar: Consumer<BottomNavigationChangeNotifier>(
+          builder: (context, model, _) => BottomNavigationBar(
+              onTap: (index) {
+                context
+                    .read<BottomNavigationChangeNotifier>()
+                    .setCurrentIndex(index);
+              },
+              currentIndex: model.currentIndex,
+              selectedItemColor: Color(
+                0xFF3b7ed9,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                title: Text('Profile'),
-              )
-            ]),
-      ),
-      body: Consumer<BottomNavigationChangeNotifier>(
-          builder: (context, model, _) {
-        if (model.currentIndex == 1) {
-          return HiRamProfileBody();
-        }
-        return Column(
-          children: <Widget>[
-            Expanded(
-              child: HeaderDashboard(),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black38),
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  title: Text('Home'),
                 ),
-                padding: const EdgeInsets.all(12),
-                margin: const EdgeInsets.all(8),
-                child: Row(children: [
-                  Text(
-                    'What would you like to do?',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                ]),
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Container(
-                color: Color(0xFFf5f7fb),
-                child: MyLoanPayments(),
-              ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  title: Text('Profile'),
+                )
+              ]),
+        ),
+        body: Consumer<BottomNavigationChangeNotifier>(
+            builder: (context, model, _) {
+          if (model.currentIndex == 1) {
+            return HiRamProfileBody();
+          }
+          return Column(
+            children: <Widget>[
+              HeaderDashboard(),
+              AccountActions(),
+              Expanded(
+                flex: 4,
+                child: Container(
+                  color: Color(0xFFf5f7fb),
+                  child: MyLoanPayments(),
+                ),
+              )
+            ],
+          );
+        }),
+      ),
+    );
+  }
+}
+
+class TransactionFAB extends StatefulWidget {
+  const TransactionFAB({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  _TransactionFABState createState() => _TransactionFABState();
+}
+
+class _TransactionFABState extends State<TransactionFAB> {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () async {
+        await showModalBottomSheet<bool>(
+          context: context,
+          builder: (context) => TransactionBottomSheet(),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          isDismissible: false,
+        );
+      },
+      child: Icon(Icons.note_add),
+    );
+  }
+}
+
+class TransactionBottomSheet extends StatelessWidget {
+  TransactionBottomSheet({
+    Key key,
+  }) : super(key: key);
+  final GlobalKey _formKey =
+      GlobalKey<FormState>(debugLabel: 'add transaction');
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Container(
+        height: 300,
+        child: ListView(physics: BouncingScrollPhysics(), children: [
+          Center(
+            child: Text('Choose Transaction Type'),
+          ),
+          TransactionDropdownForm()
+        ]),
+      ),
+    );
+  }
+}
+
+class TransactionDropdownForm extends StatefulWidget {
+  const TransactionDropdownForm({
+    Key key,
+    TextEditingController controller,
+    Function(String) onChange,
+  }) : super(key: key);
+
+  @override
+  _TransactionDropdownFormState createState() =>
+      _TransactionDropdownFormState();
+}
+
+class _TransactionDropdownFormState extends State<TransactionDropdownForm> {
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      items: [
+        DropdownMenuItem(child: Text('Bank')),
+        DropdownMenuItem(child: Text('Card')),
+      ],
+      onChanged: (value) {},
+    );
+  }
+}
+
+class AccountActions extends StatelessWidget {
+  const AccountActions({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 1,
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 2,
+              offset: Offset(0, 1),
             )
           ],
-        );
-      }),
+        ),
+        margin: const EdgeInsets.all(8),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Text(
+                  'What would you like to do?',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+              ),
+              FittedBox(
+                child: Row(children: [
+                  MaterialButton(
+                    child: Center(
+                      child: Row(
+                        children: [
+                          Icon(Icons.account_balance),
+                          SizedBox(width: 8),
+                          Text('Bank Transaction')
+                        ],
+                      ),
+                    ),
+                    onPressed: () {},
+                  ),
+                  VerticalDivider(),
+                  MaterialButton(
+                    child: Center(
+                      child: Row(
+                        children: [
+                          Icon(Icons.account_balance_wallet),
+                          SizedBox(width: 8),
+                          Text('My Card ID')
+                        ],
+                      ),
+                    ),
+                    onPressed: () {},
+                  )
+                ]),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -258,8 +389,6 @@ class HeaderDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -271,66 +400,7 @@ class HeaderDashboard extends StatelessWidget {
           end: Alignment.topRight,
         ),
       ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Spacer(),
-          HeaderNameDashboard(),
-          Text(
-            'You have 3 loans outstanding',
-            style: textTheme.caption.copyWith(
-              color: Colors.white54,
-            ),
-          ),
-          Spacer(),
-          CurrentBalanceDashboard(),
-          Text(
-            'Outstanding amount',
-            style: textTheme.caption.copyWith(
-              color: Colors.white54,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CurrentBalanceDashboard extends StatelessWidget {
-  const CurrentBalanceDashboard({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          '₱ 40,000.00',
-          style: textTheme.headline5.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Container(
-          child: Text(
-            'Prepayment',
-            style: textTheme.caption.copyWith(
-              color: Colors.white60,
-            ),
-          ),
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.white60,
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(24)),
-        ),
-      ],
+      child: HeaderNameDashboard(),
     );
   }
 }
@@ -343,8 +413,16 @@ class HeaderNameDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
         Text(
           'Good day, Vince!',
           style: textTheme.headline5.copyWith(
@@ -352,28 +430,14 @@ class HeaderNameDashboard extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        Row(
-          children: <Widget>[
-            CircleAvatar(
-              radius: 12,
-              backgroundColor: Color(0xFF6ba1e5),
-              child: Icon(
-                Icons.subject,
-                size: 12,
-                color: Colors.white,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                'Audit',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            )
-          ],
-        )
+        Spacer(),
+        IconButton(
+          icon: Icon(Icons.notifications_active, color: Colors.white),
+          onPressed: () {
+            Scaffold.of(context).openEndDrawer();
+          },
+        ),
+        SizedBox(width: 8),
       ],
     );
   }

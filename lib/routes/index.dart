@@ -15,14 +15,14 @@ class HiRamRoutes {
     switch (settings.name) {
       case routeIntro:
       case routeDashboard:
-        return CupertinoPageRoute(
+        return CupertinoPageRoute<HiRamDashboardScaffold>(
           settings: settings,
           builder: (context) => HiRamDashboardScaffold(),
         );
       case routeProfile:
       case routeLoans:
       default:
-        return CupertinoPageRoute(
+        return CupertinoPageRoute<HiRamLoginScaffold>(
           builder: (context) => HiRamLoginScaffold(),
         );
     }

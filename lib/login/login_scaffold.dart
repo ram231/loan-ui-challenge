@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:loan_payment_challenge/routes/index.dart';
+import 'package:hiram/routes/index.dart';
 
 class HiRamLoginScaffold extends StatelessWidget {
   @override
@@ -64,6 +64,13 @@ class HiRamLoginBody extends StatelessWidget {
                 fit: BoxFit.none,
               ),
             ),
+            Text(' HiRAM ',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: 'baybayin',
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                )),
             Text(
               'HiRAM',
               style: Theme.of(context).accentTextTheme.headline2.copyWith(
@@ -72,7 +79,7 @@ class HiRamLoginBody extends StatelessWidget {
                   ),
             ),
             Text(
-              'Keep track of what they\'ve\nborrowed from you.',
+              'Keep track of your expense',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
@@ -256,7 +263,7 @@ class HiRamPasswordTextField extends StatefulWidget {
 }
 
 class _HiRamPasswordTextFieldState extends State<HiRamPasswordTextField> {
-  bool showPassword = false;
+  bool _hidePassworod = true;
 
   @override
   Widget build(BuildContext context) {
@@ -264,22 +271,20 @@ class _HiRamPasswordTextFieldState extends State<HiRamPasswordTextField> {
       controller: widget._passwordController,
       hintText: 'Password',
       errorText: '*Password Required!',
-      obscureText: showPassword,
+      obscureText: _hidePassworod,
       onSubmit: widget.onSubmit,
-      suffixIcon: widget?._passwordController?.text?.isNotEmpty ?? false
-          ? GestureDetector(
-              onTap: () {
-                setState(() {
-                  showPassword = !showPassword;
-                });
-              },
-              child: Icon(
-                showPassword ? Icons.visibility_off : Icons.visibility,
-                color: Colors.grey,
-                size: 16,
-              ),
-            )
-          : null,
+      suffixIcon: GestureDetector(
+        onTap: () {
+          setState(() {
+            _hidePassworod = !_hidePassworod;
+          });
+        },
+        child: Icon(
+          _hidePassworod ? Icons.visibility_off : Icons.visibility,
+          color: Colors.grey,
+          size: 16,
+        ),
+      ),
     );
   }
 }
